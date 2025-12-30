@@ -104,6 +104,19 @@ def convert_country(code):
 df_obesity["Country"] = df_obesity["Country"].apply(convert_country)
 df_malnutrition["Country"] = df_malnutrition["Country"].apply(convert_country)
 
+-----------------Handling null values---------------------
+df_obesity.fillna({
+    "Region": "Not Available",
+    "Country": "Not Available"
+}, inplace=True)
+
+df_malnutrition.fillna({
+    "Region": "Not Available",
+    "Country": "Not Available"
+}, inplace=True)
+
+
+
   -------------- converting age ,obesity level,malnutrition level---------------------------
     
 df_obesity["Age_Group"] = df_obesity["Mean_Estimate"].apply(
