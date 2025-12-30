@@ -1,1 +1,44 @@
+import requests
+import pprint
+url = "https://ghoapi.azureedge.net/api/NCD_BMI_30C"
+data = requests.get(url)
+#print(data.json())
+data
+import pandas as pd
+obesity=[]
+obesity=data.json()["value"]
+df_obesity=pd.DataFrame(obesity)
+df_obesity
 
+obesity2=[]
+obesity2=data.json()["value"]
+df_obesity2=pd.DataFrame(obesity2)
+df_obesity2
+
+-------Extracting malnutrition----------
+import pandas as pd
+import requests
+import pprint
+url = "https://ghoapi.azureedge.net/api/NCD_BMI_18C"
+data = requests.get(url)
+#print(data.json())
+
+data
+import pandas as pd
+malnutrition=[]
+malnutrition=data.json()["value"]
+df_malnutrition=pd.DataFrame(malnutrition)
+df_malnutrition
+
+import pandas as pd
+malnutrition2=[]
+malnutrition2=data.json()["value"]
+df_malnutrition2=pd.DataFrame(malnutrition2)
+df_malnutrition2
+
+import pandas as pd
+
+df_obesity.to_csv("obesity.csv", index=False)
+df_obesity2.to_csv("obesity2.csv", index=False)
+df_malnutrition.to_csv("malnutrition.csv", index=False)
+df_malnutrition2.to_csv("malnutrition2.csv", index=False)
