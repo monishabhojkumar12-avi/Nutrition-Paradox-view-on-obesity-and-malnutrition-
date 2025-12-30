@@ -1,0 +1,133 @@
+obesity_adults["age_group"] = "Adults"
+obesity_children["age_group"] = "Children"
+malnutrition_adults["age_group"] = "Adults"
+malnutrition_children["age_group"] = "Children"
+df_obesity = pd.concat(
+    [obesity_adults, obesity_children],
+    ignore_index=True
+)
+df_malnutrition = pd.concat(
+    [malnutrition_adults, malnutrition_children],
+    ignore_index=True
+)
+
+df_obesity = df_obesity[
+    (df_obesity["TimeDim"] >= 2012) &
+    (df_obesity["TimeDim"] <= 2022)
+]
+
+df_malnutrition = df_malnutrition[
+    (df_malnutrition["TimeDim"] >= 2012) &
+    (df_malnutrition["TimeDim"] <= 2022)
+]
+
+--------------columns to keep and renaming the column----------------
+  
+  columns_to_keep = [
+    "ParentLocation",
+    "Dim1",
+    "TimeDim",
+    "Low",
+    "High",
+    "NumericValue",
+    "SpatialDim",
+    "age_group"
+]
+
+df_obesity = df_obesity[columns_to_keep]
+df_malnutrition = df_malnutrition[columns_to_keep]
+
+rename_columns = {
+    "TimeDim": "Year",
+    "Dim1": "Gender",
+    "NumericValue": "Mean_Estimate",
+    "Low": "LowerBound",
+    "High": "UpperBound",
+    "ParentLocation": "Region",
+    "SpatialDim": "Country"
+}
+
+df_obesity.rename(columns=rename_columns, inplace=True)
+df_malnutrition.rename(columns=rename_columns, inplace=True)
+
+def standardize_gender(value):
+    if value is None:
+        return value
+    value = value.lower()
+    if "male" in value:
+        return "Male"
+    elif "female" in value:
+        return "Female"
+    else:
+        return "Both"
+
+df_obesity["Gender"] = df_obesity["Gender"].apply(standardize_gender)
+df_malnutrition["Gender"] = df_malnutrition["Gender"].apply(standardize_gender)
+
+ ---------------import pycountry-------------         
+!pip install pycountry
+import pycountry
+def alpha3_to_country_name(code):
+    try:
+        country = pycountry.countries.get(alpha_3=code)
+        if country:
+            return country.name
+        else:
+            return None
+    except:
+        return None
+df_obesity["Country"] = df_obesity["Country"].apply(alpha3_to_country_name)
+df_malnutrition["Country"] = df_malnutrition["Country"].apply(alpha3_to_country_name)
+special_cases = {
+    'GLOBAL': 'Global',
+    'WB_LMI': 'Low & Middle Income',
+    'WB_HI': 'High Income',
+    'WB_LI': 'Low Income',
+    'EMR': 'Eastern Mediterranean Region',
+    'EUR': 'Europe',
+    'AFR': 'Africa',
+    'SEAR': 'South-East Asia Region',
+    'WPR': 'Western Pacific Region',
+    'AMR': 'Americas Region',
+    'WB_UMI': 'Upper Middle Income'
+}
+def convert_country(code):
+    if code in special_cases:
+        return special_cases[code]
+    try:
+        country = pycountry.countries.get(alpha_3=code)
+        if country:
+            return country.name
+    except:
+        pass
+    return code
+df_obesity["Country"] = df_obesity["Country"].apply(convert_country)
+df_malnutrition["Country"] = df_malnutrition["Country"].apply(convert_country)
+
+  -------------- converting age ,obesity level,malnutrition level---------------------------
+    
+df_obesity["Age_Group"] = df_obesity["Mean_Estimate"].apply(
+    lambda x: "Adult" if x >= 18 else "Child/Adolescent"
+)
+
+df_obesity["CI_Width"] = df_obesity["UpperBound"] - df_obesity["LowerBound"]
+df_malnutrition["CI_Width"] = df_malnutrition["UpperBound"] - df_malnutrition["LowerBound"]
+
+def obesity_category(value):
+    if value >= 30:
+        return "High"
+    elif value >= 25:
+        return "Moderate"
+    else:
+        return "Low"
+df_obesity["Obesity_Level"] = df_obesity["Mean_Estimate"].apply(obesity_category)
+
+def malnutrition_category(value):
+    if value >= 20:
+        return "High"
+    elif value >= 10:
+        return "Moderate"
+    else:
+        return "Low"
+df_malnutrition["Malnutrition_Level"] = df_malnutrition["Mean_Estimate"].apply(malnutrition_category)
+
