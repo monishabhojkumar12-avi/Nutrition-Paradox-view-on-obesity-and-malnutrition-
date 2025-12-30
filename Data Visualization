@@ -1,1 +1,92 @@
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+sns.histplot(df_obesity["Mean_Estimate"], bins=30, kde=True)
+plt.title("Distribution of Obesity Mean Estimate")
+plt.show()
+
+--------------------------------------------------------
+sns.histplot(df_malnutrition["Mean_Estimate"], bins=30, kde=True)
+plt.title("Distribution of Malnutrition Mean Estimate")
+plt.show()
+-----------boxplot----------------
+sns.boxplot(x=df_obesity["CI_Width"])
+plt.title("CI Width Distribution – Obesity")
+plt.show()
+
+------------------Line chart-----------------
+obesity_trend = df_obesity.groupby("Year")["Mean_Estimate"].mean()
+
+plt.plot(obesity_trend.index, obesity_trend.values)
+plt.title("Average Obesity Trend Over Time")
+plt.xlabel("Year")
+plt.ylabel("Mean Estimate")
+plt.show()
+
+------------------Bar chart-----------------
+region_obesity = (
+    df_obesity.groupby("Region")["Mean_Estimate"]
+    .mean()
+    .sort_values(ascending=False)
+    .head(10)
+)
+
+region_obesity.plot(kind="bar")
+plt.title("Top Regions by Obesity Levels")
+plt.ylabel("Mean Estimate")
+plt.show()
+
+region_malnutrition = (
+    df_malnutrition.groupby("Region")["Mean_Estimate"]
+    .mean()
+    .sort_values(ascending=False)
+    .head(10)
+)
+
+region_malnutrition.plot(kind="bar")
+plt.title("Top Regions by Malnutrition Levels")
+plt.ylabel("Mean Estimate")
+plt.show()
+------------boxplot------------
+sns.boxplot(
+    data=df_obesity,
+    x="Region",
+    y="Mean_Estimate"
+)
+plt.xticks(rotation=90)
+plt.title("Obesity Variability by Region")
+plt.show()
+
+------------kde plot-------------
+plt.figure(figsize=(8,4))
+
+sns.kdeplot(df_obesity["Mean_Estimate"], label="Obesity")
+sns.kdeplot(df_malnutrition["Mean_Estimate"], label="Malnutrition")
+
+plt.title("Obesity vs Malnutrition Distribution")
+plt.legend()
+plt.show()
+
+-----------Scatter plot------------
+sns.scatterplot(
+    data=df_obesity,
+    x="CI_Width",
+    y="Mean_Estimate",
+    hue="Gender"
+)
+plt.title("CI Width vs Mean Estimate (Obesity)")
+
+-----------Headmap--------------
+pivot = df_obesity.pivot_table(
+    values="Mean_Estimate",
+    index="Region",
+    columns="Year",
+    aggfunc="mean"
+)
+
+sns.heatmap(pivot, cmap="coolwarm")
+plt.title("Obesity Heatmap by Region & Year")
+plt.show()
+plt.show()
+
 
