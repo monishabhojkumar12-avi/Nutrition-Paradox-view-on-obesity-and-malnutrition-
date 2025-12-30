@@ -1,0 +1,66 @@
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS obesity (
+    Year INTEGER,
+    Gender TEXT,
+    Mean_Estimate REAL,
+    LowerBound REAL,
+    UpperBound REAL,
+    Age_Group TEXT,
+    Country TEXT,
+    Region TEXT,
+    CI_Width REAL,
+    Obesity_Level TEXT
+)
+""")
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS malnutrition (
+    Year INTEGER,
+    Gender TEXT,
+    Mean_Estimate REAL,
+    LowerBound REAL,
+    UpperBound REAL,
+    Age_Group TEXT,
+    Country TEXT,
+    Region TEXT,
+    CI_Width REAL,
+    Malnutrition_Level TEXT
+)
+""")
+
+------------Inserting data---------
+for _, row in df_obesity.iterrows():
+    cursor.execute("""
+    INSERT INTO obesity VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        row["Year"],
+        row["Gender"],
+        row["Mean_Estimate"],
+        row["LowerBound"],
+        row["UpperBound"],
+        row["Age_Group"],
+        row["Country"],
+        row["Region"],
+        row["CI_Width"],
+        row["Obesity_Level"]
+    ))
+
+for _, row in df_malnutrition.iterrows():
+    cursor.execute("""
+    INSERT INTO malnutrition VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        row["Year"],
+        row["Gender"],
+        row["Mean_Estimate"],
+        row["LowerBound"],
+        row["UpperBound"],
+        row["Age_Group"],
+        row["Country"],
+        row["Region"],
+        row["CI_Width"],
+        row["Malnutrition_Level"]
+    ))
+
+conn.commit()
+conn.close()
+
