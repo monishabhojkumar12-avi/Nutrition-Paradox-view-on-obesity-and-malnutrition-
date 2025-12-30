@@ -1,0 +1,5 @@
+import sqlite3
+
+# Create / connect to database
+conn = sqlite3.connect("health_data.db")
+cursor = conn.cursor()
