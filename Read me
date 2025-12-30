@@ -1,1 +1,254 @@
+⚖️ Nutrition Paradox: A Global View on Obesity and Malnutrition
+📌 Project Overview
 
+The Nutrition Paradox project analyzes the coexistence of rising obesity and persistent malnutrition across countries, regions, age groups, and genders using WHO public health datasets.
+The project applies ETL, data cleaning, SQL analytics, EDA, and visualization to uncover global nutrition trends and support data-driven public health decision-making.
+
+🎯 Problem Statement
+
+As a Data Analyst for a global health organization, the objective is to investigate how undernutrition and overnutrition vary worldwide.
+Using publicly available WHO data, the project explores:
+
+Country-wise and regional trends
+
+Adult vs child nutrition patterns
+
+Gender disparities
+
+Changes over time (2012–2022)
+
+The goal is to derive actionable insights that can guide policy planning and health interventions.
+
+🛠 Skills & Technologies Used
+
+Python (Pandas, NumPy)
+
+ETL & Data Cleaning
+
+Exploratory Data Analysis (EDA)
+
+SQL (SQLite / MySQL / PostgreSQL)
+
+SQL Query Writing (Single & Join Queries)
+
+Data Visualization (Matplotlib / Seaborn / Plotly)
+
+Power BI / Streamlit
+
+pycountry (Country code conversion)
+
+Public Health Analytics
+
+🌍 Domain
+
+Global Health & Nutrition Analytics
+
+📂 Data Sources (WHO APIs)
+Obesity Datasets
+
+Adults (BMI ≥ 30)
+https://ghoapi.azureedge.net/api/NCD_BMI_30C
+
+Children & Adolescents (Overweight/Obese)
+https://ghoapi.azureedge.net/api/NCD_BMI_PLUS2C
+
+Malnutrition Datasets
+
+Adults (BMI < 18.5)
+https://ghoapi.azureedge.net/api/NCD_BMI_18C
+
+Children & Adolescents (Thinness)
+https://ghoapi.azureedge.net/api/NCD_BMI_MINUS2C
+
+🔄 Project Workflow
+1️⃣ Data Collection & Preprocessing
+
+Loaded 4 WHO datasets using APIs
+
+Filtered data between 2012–2022
+
+Added age_group column:
+
+Adult
+
+Child/Adolescent
+
+Combined:
+
+Obesity datasets → df_obesity
+
+Malnutrition datasets → df_malnutrition
+
+2️⃣ Data Cleaning & Feature Engineering
+
+Columns Retained & Renamed:
+
+Year
+
+Gender
+
+Mean_Estimate
+
+LowerBound
+
+UpperBound
+
+CI_Width
+
+Age_Group
+
+Country
+
+Region
+
+Obesity_Level / Malnutrition_Level
+
+Key Enhancements:
+
+Converted ISO Alpha-3 country codes to full names using pycountry
+
+Handled special region codes (GLOBAL, AFR, EUR, etc.)
+
+Calculated Confidence Interval Width
+
+Categorized nutrition risk levels:
+
+Low / Moderate / High
+
+3️⃣ Exploratory Data Analysis (EDA)
+
+Distribution analysis of obesity and malnutrition
+
+Trend analysis over time
+
+Regional and demographic comparisons
+
+Obesity vs malnutrition contrast
+
+Visualizations:
+
+Line charts (time trends)
+
+Bar charts (top/bottom countries)
+
+Box plots (regional variability)
+
+Scatter plots (nutrition comparison)
+
+Heatmaps (CI_Width patterns)
+
+4️⃣ SQL Database Integration
+
+Created SQL database
+
+Created two tables:
+
+obesity
+
+malnutrition
+
+Inserted cleaned data using Python
+
+5️⃣ SQL Analytics (25 Queries)
+🧋 Obesity (10 Queries)
+
+Top regions by obesity
+
+Top countries with high obesity
+
+Gender & age-wise averages
+
+Country-level trends
+
+Data reliability using CI_Width
+
+Global obesity trend
+
+👾 Malnutrition (10 Queries)
+
+Age-wise and gender-based averages
+
+Regional trends
+
+Countries with increasing malnutrition
+
+CI-based risk flags
+
+Min/Max year-wise comparison
+
+🔗 Combined Analysis (5 Queries)
+
+Obesity vs malnutrition by country
+
+Gender-based disparity comparison
+
+Region-wise side-by-side analysis
+
+Countries with obesity ↑ and malnutrition ↓
+
+Age-wise trend analysis
+
+📊 Visualization Layer
+
+Power BI Dashboard or Streamlit App
+
+Interactive charts:
+
+Line charts
+
+Bar charts
+
+Maps
+
+Scatter plots
+
+Heatmaps
+
+Decomposition trees
+
+💼 Business Use Cases
+
+Nutrition Risk Monitoring
+
+Demographic Disparity Analysis
+
+Policy & Funding Prioritization
+
+Regional Health Comparison
+
+Public Health Reporting
+
+🔍 Key Insights
+
+Obesity and malnutrition coexist in several regions
+
+Children show higher variability in malnutrition risk
+
+Gender disparities are visible across multiple countries
+
+CI_Width highlights data reliability differences by region
+
+📈 Deliverables
+
+Cleaned obesity & malnutrition datasets
+
+SQL tables and 25 analytical queries
+
+Python EDA notebook with visualizations
+
+Power BI dashboard or Streamlit app
+
+Insight-driven summary & recommendations
+
+🚀 Conclusion
+
+This project demonstrates how data analytics can support global health strategies by identifying nutrition risks and disparities.
+It highlights the paradoxical relationship between overnutrition and undernutrition and shows how Python, SQL, and visualization tools can transform public health data into meaningful insights.
+
+📎 References
+
+WHO Global Health Observatory (GHO)
+
+Streamlit & Power BI Documentation
+
+pycountry Documentation
